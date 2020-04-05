@@ -1,3 +1,46 @@
+// function to start a new game
+var startGame = function() {
+    // reset player stats
+    playerInfo.reset();
+
+    // fight () function call
+    for (var i = 0; i < enemyInfo.length; i++) {
+        if (playerInfo.health > 0) {
+            // let user know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
+            window.alert("Welcome to Battlebots! Round " + (i + 1));
+    
+            // pick new enemy to fight based on the index of the enemy.names array
+            var pickedEnemyObj = enemyInfo[i];
+    
+            // reset enemy.health before starting new fight
+            pickedEnemyObj.health = randomNumber(40, 60);
+    
+            // use debugger to pause script from running and check what's going on at that moment in the code
+            // debugger;
+    
+            // pass the pickedenemy.name variable's value into the fight function, where it will assume the value of the enemy.name parameter
+            fight(pickedEnemyObj);
+
+            // if player is still alive and we're not at the last enemy in the array
+            if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
+                // ask if user wants to use the store before next round
+                var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
+
+                // if yes, take them to the store() function
+                if (storeConfirm) {
+                shop();
+                }
+            }
+        }
+        else {
+            window.alert("You have lost your robot in battle! Game Over!");
+            break;
+        }
+    }
+    // after the loop ends, player is either out of health or enemies to fight, so run the endGame function
+    endGame();
+};
+
 // create function
 var fight = function(enemy) {
     // repeat and execute as long as the enemy robot is alive
@@ -58,49 +101,6 @@ var fight = function(enemy) {
         }
     };
 
-// function to start a new game
-var startGame = function() {
-    // reset player stats
-    playerInfo.reset();
-
-    // fight () function call
-    for (var i = 0; i < enemyInfo.length; i++) {
-        if (playerInfo.health > 0) {
-            // let user know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
-            window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
-    
-            // pick new enemy to fight based on the index of the enemy.names array
-            var pickedEnemyObj = enemyInfo[i];
-    
-            // reset enemy.health before starting new fight
-            pickedEnemyObj.health = randomNumber(40, 60);
-    
-            // use debugger to pause script from running and check what's going on at that moment in the code
-            // debugger;
-    
-            // pass the pickedenemy.name variable's value into the fight function, where it will assume the value of the enemy.name parameter
-            fight(pickedEnemyObj);
-
-            // if player is still alive and we're not at the last enemy in the array
-            if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
-                // ask if user wants to use the store before next round
-                var storeConfirm = window.confirm("The fight is over, visit the store before the next round?");
-
-                // if yes, take them to the store() function
-                if (storeConfirm) {
-                shop();
-                }
-            }
-        }
-        else {
-            window.alert("You have lost your robot in battle! Game Over!");
-            break;
-        }
-    }
-    // after the loop ends, player is either out of health or enemies to fight, so run the endGame function
-    endGame();
-};
-
 // function to end the entire game
 var endGame = function() {
     // if player is still alive, player wins!
@@ -160,8 +160,18 @@ var randomNumber = function(min, max) {
     return value;
 };
 
+// function to set name
+var getPlayerName = function() {
+    var name = "";
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?");
+    }
+    console.log("Your robot's name is " + name);
+    return name;
+};
+
 var playerInfo = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
